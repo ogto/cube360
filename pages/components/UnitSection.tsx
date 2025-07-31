@@ -53,11 +53,11 @@ export default function UnitSection() {
 
   // 팝업 상태
   const [showModal, setShowModal] = useState(false);
-  const [modalImage, setModalImage] = useState<string | null>(null);
+  const [modalIndex, setModalIndex] = useState<number | null>(null);
 
   // 팝업 오픈
-  const openModal = (img: string) => {
-    setModalImage(img);
+  const openModal = (idx: number) => {
+    setModalIndex(idx);
     setShowModal(true);
     document.body.style.overflow = "hidden";
   };
@@ -65,19 +65,42 @@ export default function UnitSection() {
   // 팝업 닫기
   const closeModal = () => {
     setShowModal(false);
-    setModalImage(null);
+    setModalIndex(null);
     document.body.style.overflow = "";
   };
 
-  // esc로 닫기
+  // 팝업 상태에서 esc/좌/우 키
   useEffect(() => {
     if (!showModal) return;
-    const handleEsc = (e: KeyboardEvent) => {
+    const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeModal();
+      if (unit && modalIndex !== null) {
+        if (e.key === "ArrowLeft") {
+          setModalIndex((prev) =>
+            prev === 0 ? unit.photos.length - 1 : (prev ?? 0) - 1
+          );
+        }
+        if (e.key === "ArrowRight") {
+          setModalIndex((prev) =>
+            prev === unit.photos.length - 1 ? 0 : (prev ?? 0) + 1
+          );
+        }
+      }
     };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, [showModal]);
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+    // eslint-disable-next-line
+  }, [showModal, modalIndex, unit]);
+
+  // 좌/우 버튼 클릭
+  const goPrev = () => {
+    if (unit && modalIndex !== null)
+      setModalIndex(modalIndex === 0 ? unit.photos.length - 1 : modalIndex - 1);
+  };
+  const goNext = () => {
+    if (unit && modalIndex !== null)
+      setModalIndex(modalIndex === unit.photos.length - 1 ? 0 : modalIndex + 1);
+  };
 
   return (
     <section id="unit" className="w-full bg-[#fefcf7] pb-20 pt-12">
@@ -169,7 +192,7 @@ export default function UnitSection() {
           {unit?.photos.map((photo, idx) => (
             <button
               key={photo}
-              onClick={() => openModal(photo)}
+              onClick={() => openModal(idx)}
               className="aspect-[4/3] w-full rounded-xl overflow-hidden shadow-sm border bg-[#f8f6ee] transition hover:shadow-xl focus:outline-none"
               style={{ cursor: "zoom-in" }}
               tabIndex={0}
@@ -190,7 +213,7 @@ export default function UnitSection() {
       </div>
 
       {/* 이미지 팝업(모달) */}
-      {showModal && modalImage && (
+      {showModal && modalIndex !== null && unit && (
         <div
           className="fixed inset-0 z-[9999] bg-black/85 flex items-center justify-center animate-fadein"
           onClick={closeModal}
@@ -199,6 +222,7 @@ export default function UnitSection() {
             className="relative w-full h-full flex flex-col items-center justify-center"
             onClick={e => e.stopPropagation()}
           >
+            {/* 닫기 버튼 */}
             <button
               onClick={closeModal}
               className="absolute top-6 right-8 md:top-10 md:right-12 text-white/90 text-5xl md:text-6xl font-light hover:text-[#ffd86a] transition z-10"
@@ -208,9 +232,32 @@ export default function UnitSection() {
             >
               ×
             </button>
+            {/* 왼쪽(이전) */}
+            <button
+              onClick={goPrev}
+              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-[#ffd86a] text-6xl md:text-7xl font-light transition z-10"
+              style={{ outline: "none" }}
+              aria-label="이전 이미지"
+              tabIndex={0}
+              type="button"
+            >
+              &#8592;
+            </button>
+            {/* 오른쪽(다음) */}
+            <button
+              onClick={goNext}
+              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-[#ffd86a] text-6xl md:text-7xl font-light transition z-10"
+              style={{ outline: "none" }}
+              aria-label="다음 이미지"
+              tabIndex={0}
+              type="button"
+            >
+              &#8594;
+            </button>
+            {/* 이미지 */}
             <div className="w-[96vw] max-w-5xl max-h-[80vh] flex items-center justify-center">
               <Image
-                src={modalImage}
+                src={unit.photos[modalIndex]}
                 alt="크게보기"
                 width={1600}
                 height={1200}
