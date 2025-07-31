@@ -33,7 +33,7 @@ export default function LocationSection() {
       <div className="w-full max-w-[1440px] px-2 md:px-8 lg:px-20 xl:px-0 mx-auto flex flex-col flex-1 justify-center pt-10 sm:pt-16 pb-16 sm:pb-24 lg:pb-36">
         <h2
           className="text-3xl sm:text-4xl md:text-5xl font-normal mb-16 mt-4 xl:mt-0 text-center tracking-tight"
-          style={{ fontFamily: "Nanum Myeongjo, serif", color: "#274777" }}
+          style={{ color: "#274777" }}
         >
           커뮤니티 시설 안내
         </h2>
