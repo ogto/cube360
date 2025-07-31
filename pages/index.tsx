@@ -58,7 +58,7 @@ export default function Home() {
         {/* 객실 타입 안내 */}
         <UnitSection />
         {/* 분양 일정 */}
-        <ScheduleSection />
+        {/* <ScheduleSection /> */}
         {/* 문의 폼 */}
         <InquirySection />
       </main>

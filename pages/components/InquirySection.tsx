@@ -48,8 +48,7 @@ export default function InquirySection() {
               </form>
               <div className="mt-7 flex justify-center gap-4">
                 <a
-                  href="https://pf.kakao.com/_ixkQpb"
-                  target="_blank"
+                  href="#"
                   rel="noopener noreferrer"
                   className="text-[#fae100] font-bold px-5 py-3 bg-gray-900 rounded-xl flex items-center gap-2 hover:bg-[#3c1e1e] transition text-lg"
                 >
