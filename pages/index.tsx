@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
+import HeroSection2 from "./components/HeroSection2";
+import HeroSection3 from "./components/HeroSection3";
 import OverviewSection from "./components/OverviewSection";
 import LocationSection from "./components/LocationSection";
 import UnitSection from "./components/UnitSection";
@@ -51,6 +53,8 @@ export default function Home() {
       <main className="w-full">
         {/* main */}
         <HeroSection />
+        <HeroSection2 />
+        <HeroSection3 />
         {/* 입지 환경*/}
         <OverviewSection />
         {/* 커뮤니티 */}
