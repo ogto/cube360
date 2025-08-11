@@ -9,12 +9,12 @@ const communityList = [
   {
     img: "https://cdn.quv.kr/yaujy0573/up/65f3e72a4a0a5_800.jpg",
     title: "위치",
-    desc: "ㄷ단양을 감싸는 국도 36호선에 접하는 단지 조성",
+    desc: "단양을 감싸는 국도 36호선에 접하는 단지 조성",
   },
   {
     img: "https://cdn.quv.kr/yaujy0573/up/65f3e741b8ac1_800.jpg",
     title: "관광",
-    desc: "ㅅ수상 레져 시설의 개발로 수변 광관 인구 대거 유입",
+    desc: "수상 레져 시설의 개발로 수변 광관 인구 대거 유입",
   },
   {
     img: "https://cdn.quv.kr/yaujy0573/up/65f3e741cca2b_800.jpg",
