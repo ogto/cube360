@@ -60,8 +60,7 @@ export default function OverviewSection() {
         <div className="absolute inset-0 bg-black/70" />
       </div>
       <div className="w-full max-w-7xl flex flex-col gap-20 px-6 py-20 text-white">
-        {/* 위치 설명, 지도 등 생략 */}
-                {/* 1. 위치 설명 */}
+        {/* 1. 위치 설명 */}
         <div className="w-full flex flex-col md:flex-row items-center md:items-stretch gap-10 md:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -161,8 +160,8 @@ export default function OverviewSection() {
               const to = getLineCoord(angle, outerR, center);
               const labelPos = getLineCoord(angle, outerR + labelGap, center);
               let anchor = "middle";
-              if (angle < -90 || angle > 90) anchor = "end";
-              if (angle > -90 && angle < 90) anchor = "start";
+              if (angle < -60 || angle > 60) anchor = "end";
+              if (angle > -60 && angle < 60) anchor = "start";
               if (angle === 90) anchor = "middle";
               return (
                 <g key={lines.join("-")}>
@@ -172,7 +171,7 @@ export default function OverviewSection() {
                     x2={to.x}
                     y2={to.y}
                     stroke="white"
-                    strokeWidth={svgSize * 0.005}
+                    strokeWidth={svgSize * 0.002}
                     markerEnd="url(#arrow)"
                   />
                   <text

@@ -28,11 +28,11 @@ export default function HeroSection3() {
         "
       >
         <h2 className="text-yellow-400 text-2xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 drop-shadow-lg leading-tight">
-          전문 운영으로 보장된 프리미엄
+          안정적인 꿈의 투자처,
         </h2>
         <h1 className="text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 leading-snug drop-shadow-lg font-bold">
-          안정적인<br className="block sm:hidden" />
-          꿈의 투자처
+          전문 운영사가 보장하는 <br className="block" />
+          수익성 부동산
         </h1>
       </div>
     </section>

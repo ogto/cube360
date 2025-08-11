@@ -31,7 +31,7 @@ export default function HeroSection() {
     단양의 새로운 랜드마크
   </h2>
   <h1 className="text-white text-3xl sm:text-4xl md:text-6xl lg:text-7xl mb-6 leading-snug drop-shadow-lg font-bold">
-    충북 최대 규모의<br className="block sm:hidden" />
+    충북 최대 규모의 <br className="block sm:hidden" />
     단독형 풀빌라 단지
   </h1>
 </div>

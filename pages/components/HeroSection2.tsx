@@ -11,7 +11,7 @@ export default function HeroSection2() {
       id="hero"
       className="vh-screen w-full relative overflow-hidden bg-cover bg-center"
       style={{
-        backgroundImage: "url(/images/2.png)",
+        backgroundImage: "url(/images/2new.png)",
       }}
     >
       <div className="absolute inset-0 bg-black/30" />
@@ -31,8 +31,8 @@ export default function HeroSection2() {
           단양 천혜의 자연 속
         </h2>
         <h1 className="text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 leading-snug drop-shadow-lg font-bold">
-          프라이빗한<br className="block sm:hidden" />
-          나만의 세컨드<br /> 하우스
+          프라이빗한 <br className="block sm:hidden" />
+          고급 세컨드<br /> 하우스
         </h1>
       </div>
     </section>

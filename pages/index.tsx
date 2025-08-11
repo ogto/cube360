@@ -55,12 +55,16 @@ export default function Home() {
         <HeroSection />
         <HeroSection2 />
         <HeroSection3 />
+
         {/* 입지 환경*/}
         <OverviewSection />
+
         {/* 커뮤니티 */}
         <LocationSection />
+
         {/* 객실 타입 안내 */}
         <UnitSection />
+
         {/* 분양 일정 */}
         {/* <ScheduleSection /> */}
         {/* 문의 폼 */}
