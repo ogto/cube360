@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 
 const navItems = [
   { id: "hero", label: "메인" },
-  { id: "overview", label: "입지 환경" },
-  { id: "location", label: "커뮤니티" },
-  { id: "unit", label: "객실 타입 안내" },
+  { id: "overview", label: "위치" },
+  { id: "location", label: "특장점" },
+  { id: "unit", label: "객실 타입" },
   // { id: "schedule", label: "분양 일정" },
   { id: "inquiry", label: "문의" },
 ];

@@ -16,10 +16,10 @@ export default function NaverMapBox() {
       const naver = (window as any).naver;
       if (!naver || !naver.maps) return;
 
-      const center = new naver.maps.LatLng(37.102631, 128.423357); // 단양
+      const center = new naver.maps.LatLng(36.9257271365678, 128.297557391966); // 단양
       const map = new naver.maps.Map(mapRef.current, {
         center,
-        zoom: 10,
+        zoom: 15,
       });
 
       new naver.maps.Marker({

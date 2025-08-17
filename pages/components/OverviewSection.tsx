@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import NaverMapBox from "./NaverMapBox";
 
@@ -45,6 +45,23 @@ export default function OverviewSection() {
     { lines: ["스카이워크", "13분"], angle: 135 },
   ];
 
+  // 줄 간격(필요 시 1.45~1.6에서 미세조정)
+  const lineHeight = fontSize * 1.55;
+
+  // ▼ 중앙 텍스트 BBox 측정용
+  const textRef = useRef<SVGTextElement | null>(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  useLayoutEffect(() => {
+    const b = textRef.current?.getBBox();
+    if (!b) return;
+    // 텍스트 BBox의 중심을 (center, center)에 정렬
+    setOffset({
+      x: center - (b.x + b.width / 2),
+      y: center - (b.y + b.height / 2),
+    });
+  }, [center, svgSize, fontSize, lineHeight]);
+
   return (
     <section
       id="overview"
@@ -59,6 +76,7 @@ export default function OverviewSection() {
         />
         <div className="absolute inset-0 bg-black/70" />
       </div>
+
       <div className="w-full max-w-7xl flex flex-col gap-20 px-6 py-20 text-white">
         {/* 1. 위치 설명 */}
         <div className="w-full flex flex-col md:flex-row items-center md:items-stretch gap-10 md:gap-12">
@@ -70,17 +88,18 @@ export default function OverviewSection() {
             className="flex-1 text-left space-y-4 flex flex-col justify-center"
           >
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight">위치</h2>
+            <h4>(충청북도 단양군 단성면 외중방리 산 34번지 일원)</h4>
             <p className="text-xl md:text-2xl font-medium">
               <span className="inline-block mr-2 text-6xl">➝</span>
             </p>
           </motion.div>
-          <div className="flex-1 w-full min-h-[260px] md:min-h-[320px] flex items-center justify-center">
+
+          <div className="flex-1 w-full min-h-[260px] md:min_h-[320px] flex items-center justify-center">
             <div className="w-full h-[260px] md:h-[360px]">
               <NaverMapBox />
             </div>
           </div>
         </div>
-
 
         {/* 2. 도로 접근 */}
         <motion.div
@@ -103,6 +122,8 @@ export default function OverviewSection() {
             <span className="text-white/80 text-base">1.5 Hour</span>
           </div>
         </motion.div>
+
+        {/* 3. 중심 원 + 방사형 라벨 */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -134,6 +155,7 @@ export default function OverviewSection() {
                 />
               </marker>
             </defs>
+
             {/* 중심 원 */}
             <circle
               cx={center}
@@ -143,26 +165,34 @@ export default function OverviewSection() {
               stroke="white"
               strokeWidth={svgSize * 0.01}
             />
-            <text
-              x={center}
-              y={center + fontSize / 2}
-              fill="white"
-              fontSize={fontSize * 1.65}
-              fontWeight="bold"
-              textAnchor="middle"
-              style={{ pointerEvents: "none" }}
-            >
-              사업지
-            </text>
+
+            {/* 중앙 텍스트: BBox 기준 정확 중앙 정렬 */}
+            <g transform={`translate(${offset.x}, ${offset.y})`}>
+              <text
+                ref={textRef}
+                x={0}
+                y={0}
+                fill="white"
+                fontSize={fontSize * 1.65}
+                fontWeight="bold"
+                style={{ pointerEvents: "none" }}
+              >
+                <tspan x={0} dy="0">단양</tspan>
+                <tspan x={0} dy={lineHeight}>스테이</tspan>
+                <tspan x={0} dy={lineHeight}>360</tspan>
+              </text>
+            </g>
+
             {/* 화살표와 텍스트 */}
-            {labels.map(({ lines, angle }, i) => {
+            {labels.map(({ lines, angle }) => {
               const from = getLineCoord(angle, innerR, center);
               const to = getLineCoord(angle, outerR, center);
               const labelPos = getLineCoord(angle, outerR + labelGap, center);
-              let anchor = "middle";
+              let anchor: "start" | "middle" | "end" = "middle";
               if (angle < -60 || angle > 60) anchor = "end";
               if (angle > -60 && angle < 60) anchor = "start";
               if (angle === 90) anchor = "middle";
+
               return (
                 <g key={lines.join("-")}>
                   <line
