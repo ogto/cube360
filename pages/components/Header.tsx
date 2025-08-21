@@ -2,12 +2,12 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 const navItems = [
-  { id: "hero", label: "메인" },
+  // { id: "hero", label: "메인" },
   { id: "overview", label: "위치" },
   { id: "location", label: "특장점" },
-  { id: "unit", label: "객실 타입" },
-  // { id: "schedule", label: "분양 일정" },
-  { id: "inquiry", label: "문의" },
+  { id: "unit", label: "객실타입" },
+  { id: "schedule", label: "분양안내" },
+  { id: "inquiry", label: "상담문의" },
 ];
 
 export default function Header() {
@@ -34,7 +34,7 @@ export default function Header() {
         {/* 로고 */}
         <div className="flex items-center gap-2">
           <Image src="/images/cube-logo.png" alt="CUBE360 로고" width={38} height={38} />
-          <span className="text-white text-lg md:text-xl font-extrabold tracking-tight">CUBE360</span>
+          <span className="text-white text-lg md:text-xl font-extrabold tracking-tight">단양스테이 360</span>
         </div>
         {/* PC: 네비게이션 */}
         <div className="hidden md:flex flex-1 justify-center">

@@ -32,7 +32,7 @@ export default function OverviewSection() {
 
   // svgSize에 비례해서 크기 지정
   const center = svgSize / 2;
-  const innerR = svgSize * 0.11;   // 원 크기 비율
+  const innerR = svgSize * 0.11; // 원 크기 비율
   const outerR = svgSize * 0.35;
   const labelGap = svgSize * 0.055;
   const fontSize = svgSize * 0.03;
@@ -48,18 +48,28 @@ export default function OverviewSection() {
   // 줄 간격(필요 시 1.45~1.6에서 미세조정)
   const lineHeight = fontSize * 1.55;
 
-  // ▼ 중앙 텍스트 BBox 측정용
-  const textRef = useRef<SVGTextElement | null>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  // ▼ 중앙 텍스트 BBox 측정용 (그룹 단위)
+  const centerTextGRef = useRef<SVGGElement | null>(null);
+  const [textOffset, setTextOffset] = useState({ x: center, y: center });
 
   useLayoutEffect(() => {
-    const b = textRef.current?.getBBox();
-    if (!b) return;
-    // 텍스트 BBox의 중심을 (center, center)에 정렬
-    setOffset({
-      x: center - (b.x + b.width / 2),
-      y: center - (b.y + b.height / 2),
-    });
+    const measure = () => {
+      const g = centerTextGRef.current;
+      if (!g) return;
+      const b = g.getBBox(); // 실제 렌더 박스
+      setTextOffset({
+        x: center - (b.x + b.width / 2),
+        y: center - (b.y + b.height / 2),
+      });
+    };
+    measure();
+
+    // 웹폰트 로딩 이후 재측정
+    const fonts: any = (document as any).fonts;
+    if (fonts?.ready) fonts.ready.then(measure);
+
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, [center, svgSize, fontSize, lineHeight]);
 
   return (
@@ -94,33 +104,45 @@ export default function OverviewSection() {
             </p>
           </motion.div>
 
-          <div className="flex-1 w-full min-h-[260px] md:min_h-[320px] flex items-center justify-center">
+          <div className="flex-1 w-full min-h-[260px] md:min-h-[320px] flex items-center justify-center">
             <div className="w-full h-[260px] md:h-[360px]">
               <NaverMapBox />
             </div>
           </div>
         </div>
 
-        {/* 2. 도로 접근 */}
+        {/* 2. 도로 접근 (카드형, 반투명 박스 + 폰트/간격 업) */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1.2, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-x-20 gap-y-6 text-center text-lg md:text-xl font-medium"
+          className="flex flex-wrap justify-center gap-x-8 gap-y-8"
         >
-          <div>
-            <span className="font-bold">동서울 IC</span> ➝ 중부고속도로<br />
-            <span className="text-white/80 text-base">1.5 Hour</span>
-          </div>
-          <div>
-            <span className="font-bold">대전</span> ➝ 중부고속도로<br />
-            <span className="text-white/80 text-base">2.0 Hour</span>
-          </div>
-          <div>
-            <span className="font-bold">수원신갈 IC</span> ➝ 경부고속도로<br />
-            <span className="text-white/80 text-base">1.5 Hour</span>
-          </div>
+          {[
+            { from: "동서울 IC", via: "중부고속도로", time: "1.5 Hour" },
+            { from: "대전", via: "중부고속도로", time: "2.0 Hour" },
+            { from: "수원신갈 IC", via: "경부고속도로", time: "1.5 Hour" },
+          ].map(({ from, via, time }) => (
+            <div
+              key={from}
+              className="
+                min-w-[260px] max-w-[320px]
+                px-8 py-6 md:px-10 md:py-8
+                rounded-3xl text-center
+                bg-black/45 backdrop-blur-sm
+                ring-1 ring-blue-300/40
+                shadow-xl shadow-black/30
+              "
+            >
+              <div className="text-white font-semibold text-2xl md:text-3xl leading-snug">
+                <span className="font-bold">{from}</span>
+                <span className="mx-2">➝</span>
+                <span>{via}</span>
+              </div>
+              <div className="mt-3 text-white/85 text-lg md:text-xl">{time}</div>
+            </div>
+          ))}
         </motion.div>
 
         {/* 3. 중심 원 + 방사형 라벨 */}
@@ -166,20 +188,17 @@ export default function OverviewSection() {
               strokeWidth={svgSize * 0.01}
             />
 
-            {/* 중앙 텍스트: BBox 기준 정확 중앙 정렬 */}
-            <g transform={`translate(${offset.x}, ${offset.y})`}>
+            {/* 중앙 텍스트: BBox 기반 정확 중앙 정렬 */}
+            <g ref={centerTextGRef} transform={`translate(${textOffset.x}, ${textOffset.y})`}>
               <text
-                ref={textRef}
-                x={0}
-                y={0}
                 fill="white"
                 fontSize={fontSize * 1.65}
                 fontWeight="bold"
+                textAnchor="middle"
                 style={{ pointerEvents: "none" }}
               >
-                <tspan x={0} dy="0">단양</tspan>
-                <tspan x={0} dy={lineHeight}>스테이</tspan>
-                <tspan x={0} dy={lineHeight}>360</tspan>
+                <tspan x="0" dy="0">단양</tspan>
+                <tspan x="0" dy={lineHeight}>동화마을</tspan>
               </text>
             </g>
 

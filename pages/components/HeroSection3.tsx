@@ -16,23 +16,22 @@ export default function HeroSection3() {
     >
       <div className="absolute inset-0 bg-black/30" />
 
-      {/* 텍스트 박스: 반응형 중앙 정렬 + 좌측정렬 */}
+      {/* 텍스트 박스: 하단 중앙 + 텍스트 중앙 정렬 */}
       <div
         className="
           absolute
-          top-[22%] left-1/2 -translate-x-1/2
-          sm:left-[20%] sm:translate-x-0
+          bottom-[12%] left-1/2 -translate-x-1/2
           z-10
           w-full max-w-full sm:max-w-2xl md:max-w-4xl
-          text-left px-4
+          text-center px-4
         "
       >
         <h2 className="text-yellow-400 text-2xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 drop-shadow-lg leading-tight">
-          안정적인 꿈의 투자처,
+          단양군과 함께하는
         </h2>
         <h1 className="text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 leading-snug drop-shadow-lg font-bold">
-          전문 운영사가 보장하는 <br className="block" />
-          수익성 부동산
+          자연과 관광의 중심 단지 <br className="block" />
+          단양 동화마을입니다 
         </h1>
       </div>
     </section>
