@@ -50,16 +50,23 @@ export default function Header() {
             ))}
           </div>
         </div>
-        {/* PC: 연락처 */}
-        <div className="hidden md:flex items-center">
-          <a
-            href="tel:010-1234-5678"
-            className="text-white text-sm md:text-base font-bold px-4 py-2 rounded-lg hover:bg-white/10 transition"
-            style={{ whiteSpace: 'nowrap' }}
-          >
-            010-1234-5678
-          </a>
-        </div>
+{/* PC: 연락처 (카카오톡 아이콘으로 교체) */}
+<div className="hidden md:flex items-center">
+  <a
+    href="https://pf.kakao.com/_YOUR_ID" // 카카오톡 채널 URL로 교체
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center rounded-lg hover:bg-white/10 transition"
+  >
+    <Image
+      src="/images/kakao_talk.png"
+      alt="카카오톡 상담"
+      width={96}
+      height={96}
+    />
+  </a>
+</div>
+
         {/* 모바일: 메뉴버튼 */}
         <button
           className="md:hidden ml-auto flex items-center justify-center w-10 h-10 z-50"

@@ -146,7 +146,7 @@ export default function OverviewSection() {
         </motion.div>
 
         {/* 3. 중심 원 + 방사형 라벨 */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -178,7 +178,6 @@ export default function OverviewSection() {
               </marker>
             </defs>
 
-            {/* 중심 원 */}
             <circle
               cx={center}
               cy={center}
@@ -188,7 +187,6 @@ export default function OverviewSection() {
               strokeWidth={svgSize * 0.01}
             />
 
-            {/* 중앙 텍스트: BBox 기반 정확 중앙 정렬 */}
             <g ref={centerTextGRef} transform={`translate(${textOffset.x}, ${textOffset.y})`}>
               <text
                 fill="white"
@@ -202,7 +200,6 @@ export default function OverviewSection() {
               </text>
             </g>
 
-            {/* 화살표와 텍스트 */}
             {labels.map(({ lines, angle }) => {
               const from = getLineCoord(angle, innerR, center);
               const to = getLineCoord(angle, outerR, center);
@@ -242,7 +239,7 @@ export default function OverviewSection() {
               );
             })}
           </svg>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

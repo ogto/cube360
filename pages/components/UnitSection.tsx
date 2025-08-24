@@ -1,53 +1,118 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import Image from "next/image";
 
-// 단일 타입: C TYPE
-const unitC = {
-  key: "C",
-  name: "C TYPE",
-  roomCount: 120, // 필요 시 숫자 조정
-  area: "45.4583㎡ (13.7511py)", // 필요 시 텍스트 조정
-  contract: "76.5963㎡ (23.1704py)", // 필요 시 텍스트 조정
-  main: "/images/c_type/21.jpg",
-  photos: Array.from({ length: 72 }, (_, i) => `/images/c_type/${i + 1}.jpg`).filter(
-    (src) => src !== "/images/c_type/21.jpg"
-  ),
+// 공통 유틸: 사진 배열 생성 (예: 1.jpg~72.jpg 중 main 제외)
+const makePhotos = (dir: string, count: number, mainFile: string) =>
+  Array.from({ length: count }, (_, i) => `${dir}/${i + 1}.jpg`).filter(
+    (src) => src !== `${dir}/${mainFile}`
+  );
+
+// 타입 데이터 정의
+type Unit = {
+  key: "A" | "B" | "C";
+  name: string;
+  rooms: number;   // 객실수 (호)
+  py: number;      // 평형 (py)
+  floors: number;  // 층수 (층)
+  main: string;
+  photos: string[];
 };
 
+// ✅ 이미지의 수치에 맞게 반영
+const unitA: Unit = {
+  key: "A",
+  name: "A TYPE",
+  rooms: 10,
+  py: 22,
+  floors: 1,
+  main: "/images/a_type/15.jpg",
+  photos: makePhotos("/images/a_type", 72, "15.jpg"),
+};
+
+const unitB: Unit = {
+  key: "B",
+  name: "B TYPE",
+  rooms: 9,
+  py: 29,
+  floors: 1,
+  main: "/images/b_type/9.jpg",
+  photos: makePhotos("/images/b_type", 72, "9.jpg"),
+};
+
+const unitC: Unit = {
+  key: "C",
+  name: "C TYPE",
+  rooms: 6,
+  py: 50,
+  floors: 2,
+  main: "/images/c_type/21.jpg",
+  photos: makePhotos("/images/c_type", 72, "21.jpg"),
+};
+
+// 탭 버튼
+function TypeTab({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      type="button"
+      className={
+        active
+          ? "px-4 py-2 rounded-full text-white bg-[#292821] border border-[#292821] shadow-sm"
+          : "px-4 py-2 rounded-full text-[#7d6847] bg-white border border-[#e7e0c9] hover:bg-[#f4efe2] transition"
+      }
+      aria-pressed={active}
+    >
+      {label}
+    </button>
+  );
+}
+
 export default function UnitSection() {
-  const unit = unitC;
+  // 현재 선택 타입
+  const [typeKey, setTypeKey] = useState<Unit["key"]>("C");
+  const unit = useMemo<Unit>(() => {
+    if (typeKey === "A") return unitA;
+    if (typeKey === "B") return unitB;
+    return unitC;
+  }, [typeKey]);
 
   // 모달 상태
   const [showModal, setShowModal] = useState(false);
   const [modalIndex, setModalIndex] = useState<number | null>(null);
 
-  // 썸네일 슬라이더 상태
+  // 썸네일 슬라이더
   const itemsPerPage = 4;
   const total = unit.photos.length;
   const [startIdx, setStartIdx] = useState(0);
-
-  // 슬라이드 애니메이션 방향: 'left' | 'right' | null
   const [animDir, setAnimDir] = useState<"left" | "right" | null>(null);
 
-  // 현재 페이지에 보이는 4장(순환)
   const visiblePhotos = useMemo(() => {
+    if (total === 0) return [];
     return Array.from({ length: itemsPerPage }, (_, i) => {
       const realIndex = (startIdx + i) % total;
       return { src: unit.photos[realIndex], realIndex };
     });
   }, [startIdx, total, unit.photos]);
 
-  // 화살표 이동
   const goPagePrev = () => {
+    if (total === 0) return;
     setAnimDir("right");
     setStartIdx((prev) => (prev - itemsPerPage + total) % total);
   };
   const goPageNext = () => {
+    if (total === 0) return;
     setAnimDir("left");
     setStartIdx((prev) => (prev + itemsPerPage) % total);
   };
 
-  // 마우스 휠(Shift+Wheel 또는 트랙패드 수평 제스처)로도 이동
   const sliderRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const el = sliderRef.current;
@@ -62,9 +127,10 @@ export default function UnitSection() {
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 키보드 좌우로 슬라이더 이동 (모달이 아닐 때)
+  // 키보드 좌우 (모달 아닐 때)
   useEffect(() => {
     if (showModal) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -73,10 +139,11 @@ export default function UnitSection() {
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [showModal]);
+  }, [showModal, total]);
 
-  // 모달 오픈/클로즈
+  // 모달
   const openModal = (realIdx: number) => {
+    if (total === 0) return;
     setModalIndex(realIdx);
     setShowModal(true);
     document.body.style.overflow = "hidden";
@@ -86,18 +153,14 @@ export default function UnitSection() {
     setModalIndex(null);
     document.body.style.overflow = "";
   };
-
-  // 모달에서 좌우 이동
   const goPrevModal = () => {
-    if (modalIndex === null) return;
+    if (modalIndex === null || total === 0) return;
     setModalIndex((prev) => (prev! === 0 ? total - 1 : (prev as number) - 1));
   };
   const goNextModal = () => {
-    if (modalIndex === null) return;
+    if (modalIndex === null || total === 0) return;
     setModalIndex((prev) => (prev! === total - 1 ? 0 : (prev as number) + 1));
   };
-
-  // 모달에서 키보드 ESC/좌/우
   useEffect(() => {
     if (!showModal) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -109,57 +172,67 @@ export default function UnitSection() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [showModal, modalIndex, total]);
 
-  // 애니메이션 종료 시 방향 리셋
   const onSlideAnimEnd = () => setAnimDir(null);
+
+  // 타입 변경 시 상태 리셋
+  useEffect(() => {
+    setStartIdx(0);
+    setAnimDir(null);
+    setShowModal(false);
+    setModalIndex(null);
+    document.body.style.overflow = "";
+  }, [typeKey]);
 
   return (
     <section id="unit" className="w-full bg-[#fefcf7] pb-20 pt-12">
       <div className="max-w-7xl mx-auto px-4">
-        {/* 타이틀 영역 */}
-        <div className="text-center mb-8">
+        {/* 타이틀 + 탭 */}
+        <div className="text-center mb-6">
           <div
             className="text-[2.3rem] md:text-[2.8rem] tracking-wider text-[#a98d33] font-normal"
             style={{ fontFamily: "Nanum Myeongjo, serif" }}
           >
             TYPE
           </div>
-          <div className="text-xl md:text-2xl text-[#58594e] mt-1 mb-3 font-light">객실타입</div>
+          <div className="text-xl md:text-2xl text-[#58594e] mt-1 mb-5 font-light">객실타입</div>
+
+          <div className="flex items-center justify-center gap-2 md:gap-3">
+            <TypeTab active={typeKey === "A"} label="A TYPE" onClick={() => setTypeKey("A")} />
+            <TypeTab active={typeKey === "B"} label="B TYPE" onClick={() => setTypeKey("B")} />
+            <TypeTab active={typeKey === "C"} label="C TYPE" onClick={() => setTypeKey("C")} />
+          </div>
         </div>
 
-        {/* 중앙 구조 */}
+        {/* 중앙 */}
         <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-10 md:gap-20">
-          {/* 좌측: 정보 */}
+          {/* 좌측: 정보 테이블 (요구 데이터로 수정) */}
           <div className="w-full max-w-xs">
             <div className="text-[2rem] md:text-[2.5rem] font-extrabold mb-5 text-[#292821]">
               <span className="font-light">{unit.key}</span>
-              <span
-                className="text-lg font-normal ml-1"
-                style={{ fontFamily: "Nanum Myeongjo, serif" }}
-              >
+              <span className="text-lg font-normal ml-1" style={{ fontFamily: "Nanum Myeongjo, serif" }}>
                 type
               </span>
             </div>
-            <table className="w-full text-base md:text-lg">
+
+            <table className="w-full text-base md:text-lg border-collapse">
               <tbody>
                 <tr>
-                  <td className="py-2 text-[#b3a98a] w-24 border-b border-[#ebebeb] font-normal">
-                    객실 수
-                  </td>
+                  <td className="py-2 text-[#b3a98a] w-24 border-b border-[#ebebeb] font-normal">객실수</td>
                   <td className="py-2 pl-3 border-b border-[#ebebeb] text-[#36353b]">
-                    {unit.roomCount}
+                    {unit.rooms} 호
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-[#b3a98a] w-24 border-b border-[#ebebeb] font-normal">
-                    전용면적
-                  </td>
+                  <td className="py-2 text-[#b3a98a] w-24 border-b border-[#ebebeb] font-normal">평형</td>
                   <td className="py-2 pl-3 border-b border-[#ebebeb] text-[#36353b]">
-                    {unit.area}
+                    {unit.py} py
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-[#b3a98a] w-24 font-normal">계약면적</td>
-                  <td className="py-2 pl-3 text-[#36353b]">{unit.contract}</td>
+                  <td className="py-2 text-[#b3a98a] w-24 font-normal">층수</td>
+                  <td className="py-2 pl-3 text-[#36353b]">
+                    {unit.floors}층
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -181,7 +254,7 @@ export default function UnitSection() {
           </div>
         </div>
 
-        {/* 하단: 인테리어 슬라이드(4개씩 표시) */}
+        {/* 하단: 인테리어 슬라이드(4개씩) */}
         <div className="mt-16">
           <div className="flex items-center justify-between mb-4 px-1">
             <div className="text-[#58594e] text-lg md:text-xl font-light">인테리어 갤러리</div>
@@ -205,58 +278,47 @@ export default function UnitSection() {
             </div>
           </div>
 
-          <div
-            ref={sliderRef}
-            className="relative w-full select-none"
-            aria-roledescription="carousel"
-          >
-            <div
-              key={startIdx} // 콘텐츠 교체마다 재생
-              className={`grid grid-cols-2 md:grid-cols-4 gap-6 ${
-                animDir === "left"
-                  ? "animate-slide-left"
-                  : animDir === "right"
-                  ? "animate-slide-right"
-                  : ""
-              }`}
-              onAnimationEnd={onSlideAnimEnd}
-            >
-              {visiblePhotos.map(({ src, realIndex }) => (
-                <button
-                  key={`${src}-${realIndex}`}
-                  onClick={() => openModal(realIndex)}
-                  className="aspect-[4/3] w-full rounded-xl overflow-hidden shadow-sm border bg-[#f8f6ee] transition hover:shadow-xl focus:outline-none"
-                  style={{ cursor: "zoom-in" }}
-                  tabIndex={0}
-                  aria-label="이미지 크게 보기"
-                  type="button"
-                >
-                  <Image
-                    src={src}
-                    alt={`${unit.name} 인테리어`}
-                    width={700}
-                    height={540}
-                    className="w-full h-full object-cover"
-                    draggable={false}
-                  />
-                </button>
-              ))}
-            </div>
+          <div ref={sliderRef} className="relative w-full select-none" aria-roledescription="carousel">
+            {total > 0 ? (
+              <div
+                key={`${typeKey}-${startIdx}`}
+                className={`grid grid-cols-2 md:grid-cols-4 gap-6 ${
+                  animDir === "left" ? "animate-slide-left" : animDir === "right" ? "animate-slide-right" : ""
+                }`}
+                onAnimationEnd={onSlideAnimEnd}
+              >
+                {visiblePhotos.map(({ src, realIndex }) => (
+                  <button
+                    key={`${src}-${realIndex}`}
+                    onClick={() => openModal(realIndex)}
+                    className="aspect-[4/3] w-full rounded-xl overflow-hidden shadow-sm border bg-[#f8f6ee] transition hover:shadow-xl focus:outline-none"
+                    style={{ cursor: "zoom-in" }}
+                    tabIndex={0}
+                    aria-label="이미지 크게 보기"
+                    type="button"
+                  >
+                    <Image
+                      src={src}
+                      alt={`${unit.name} 인테리어`}
+                      width={700}
+                      height={540}
+                      className="w-full h-full object-cover"
+                      draggable={false}
+                    />
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-[#8a8578] py-12">준비 중입니다.</div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* 이미지 팝업(모달) — 애니메이션 제거 버전 */}
-      {showModal && modalIndex !== null && (
-        <div
-          className="fixed inset-0 z-[9999] bg-black/85 flex items-center justify-center" // animate-fadein 제거
-          onClick={closeModal}
-        >
-          <div
-            className="relative w-full h-full flex flex-col items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* 닫기 버튼 */}
+      {/* 모달 */}
+      {showModal && modalIndex !== null && total > 0 && (
+        <div className="fixed inset-0 z-[9999] bg-black/85 flex items-center justify-center" onClick={closeModal}>
+          <div className="relative w-full h-full flex flex-col items-center justify-center" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={closeModal}
               className="absolute top-6 right-8 md:top-10 md:right-12 text-white/90 text-5xl md:text-6xl font-light hover:text-[#ffd86a] transition z-10"
@@ -266,24 +328,18 @@ export default function UnitSection() {
             >
               ×
             </button>
-
-            {/* 왼쪽(이전) */}
             <button
               onClick={goPrevModal}
               className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-[#ffd86a] text-6xl md:text-7xl font-light transition z-10"
-              style={{ outline: "none" }}
               aria-label="이전 이미지"
               tabIndex={0}
               type="button"
             >
               &#8592;
             </button>
-
-            {/* 오른쪽(다음) */}
             <button
               onClick={goNextModal}
               className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-[#ffd86a] text-6xl md:text-7xl font-light transition z-10"
-              style={{ outline: "none" }}
               aria-label="다음 이미지"
               tabIndex={0}
               type="button"
@@ -291,7 +347,6 @@ export default function UnitSection() {
               &#8594;
             </button>
 
-            {/* 큰 이미지 — key / 애니메이션 클래스 제거 */}
             <div className="w-[96vw] max-w-5xl max-h-[80vh] flex items-center justify-center">
               <Image
                 src={unit.photos[modalIndex]}
@@ -307,23 +362,13 @@ export default function UnitSection() {
         </div>
       )}
 
-      {/* 애니메이션 정의 */}
+      {/* 애니메이션 */}
       <style jsx global>{`
-        .animate-fadein {
-          animation: fadein 0.25s;
-        }
-        @keyframes fadein {
-          from { opacity: 0 }
-          to   { opacity: 1 }
-        }
+        .animate-fadein { animation: fadein 0.25s; }
+        @keyframes fadein { from { opacity: 0 } to { opacity: 1 } }
 
-        /* 썸네일 페이지 전환: 좌/우 슬라이드 인 */
-        .animate-slide-left {
-          animation: slide-left 220ms ease-out;
-        }
-        .animate-slide-right {
-          animation: slide-right 220ms ease-out;
-        }
+        .animate-slide-left { animation: slide-left 220ms ease-out; }
+        .animate-slide-right { animation: slide-right 220ms ease-out; }
         @keyframes slide-left {
           from { opacity: 0; transform: translateX(24px); }
           to   { opacity: 1; transform: translateX(0); }
@@ -333,10 +378,7 @@ export default function UnitSection() {
           to   { opacity: 1; transform: translateX(0); }
         }
 
-        /* 모달 이미지 전환: 부드러운 확대 + 페이드 인 */
-        .animate-zoom-fade {
-          animation: zoom-fade 220ms ease-out;
-        }
+        .animate-zoom-fade { animation: zoom-fade 220ms ease-out; }
         @keyframes zoom-fade {
           from { opacity: 0; transform: scale(0.985); }
           to   { opacity: 1; transform: scale(1); }

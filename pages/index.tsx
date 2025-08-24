@@ -5,6 +5,7 @@ import HeroSection2 from "./components/HeroSection2";
 import HeroSection3 from "./components/HeroSection3";
 import HeroSection4 from "./components/HeroSection4";
 import OverviewSection from "./components/OverviewSection";
+import OverviewSection2 from "./components/OverviewSection2";
 import LocationSection from "./components/LocationSection";
 import UnitSection from "./components/UnitSection";
 import ScheduleSection from "./components/ScheduleSection";
@@ -60,6 +61,7 @@ export default function Home() {
 
         {/* 입지 환경*/}
         <OverviewSection />
+        <OverviewSection2 />
 
         {/* 커뮤니티 */}
         <LocationSection />
