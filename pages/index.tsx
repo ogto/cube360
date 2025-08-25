@@ -9,6 +9,7 @@ import OverviewSection2 from "./components/OverviewSection2";
 import LocationSection from "./components/LocationSection";
 import UnitSection from "./components/UnitSection";
 import ScheduleSection from "./components/ScheduleSection";
+import ScheduleSection2 from "./components/ScheduleSection2";
 import InquirySection from "./components/InquirySection";
 
 export default function Home() {
@@ -70,7 +71,8 @@ export default function Home() {
         <UnitSection />
 
         {/* 분양 일정 */}
-        {/* <ScheduleSection /> */}
+        <ScheduleSection />
+        <ScheduleSection2 />
         {/* 문의 폼 */}
         <InquirySection />
       </main>

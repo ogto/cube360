@@ -11,22 +11,22 @@ const makePhotos = (dir: string, count: number, mainFile: string) =>
 type Unit = {
   key: "A" | "B" | "C";
   name: string;
-  rooms: number;   // 객실수 (호)
-  py: number;      // 평형 (py)
-  floors: number;  // 층수 (층)
-  main: string;
+  rooms: number;
+  py: number;
+  floors: number;
+  main: { src: string; label: string }[];   // 라벨 포함
   photos: string[];
 };
 
-// ✅ 이미지의 수치에 맞게 반영
+
 const unitA: Unit = {
   key: "A",
   name: "A TYPE",
   rooms: 10,
   py: 22,
   floors: 1,
-  main: "/images/a_type/15.jpg",
-  photos: makePhotos("/images/a_type", 72, "15.jpg"),
+  main: [{ src: "/images/type/m1.jpg", label: "단층" }],
+  photos: makePhotos("/images/type", 70, "m1.jpg"),
 };
 
 const unitB: Unit = {
@@ -35,9 +35,10 @@ const unitB: Unit = {
   rooms: 9,
   py: 29,
   floors: 1,
-  main: "/images/b_type/9.jpg",
-  photos: makePhotos("/images/b_type", 72, "9.jpg"),
+  main: [{ src: "/images/type/m2.png", label: "단층" }],
+  photos: makePhotos("/images/type", 70, "m2.png"),
 };
+
 
 const unitC: Unit = {
   key: "C",
@@ -45,8 +46,11 @@ const unitC: Unit = {
   rooms: 6,
   py: 50,
   floors: 2,
-  main: "/images/c_type/21.jpg",
-  photos: makePhotos("/images/c_type", 72, "21.jpg"),
+  main: [
+    { src: "/images/type/m1.jpg", label: "1층" },
+    { src: "/images/type/m4.jpg", label: "2층" }
+  ],
+  photos: makePhotos("/images/type", 70, "m1.jpg"),
 };
 
 // 탭 버튼
@@ -240,16 +244,25 @@ export default function UnitSection() {
 
           {/* 우측: 메인 이미지 */}
           <div className="w-full flex-1 flex justify-center">
-            <div className="w-[340px] md:w-[430px]">
-              <Image
-                src={unit.main}
-                alt={unit.name}
-                width={430}
-                height={320}
-                className="w-full h-auto rounded-2xl shadow-md"
-                style={{ background: "#f6f3ee" }}
-                priority
-              />
+            {/* md 이상에서 정확히 2열 강제, 모바일 1열 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full max-w-[920px] place-items-center">
+              {unit.main.map((m, idx) => (
+                <div key={idx} className="w-[320px] md:w-[420px] flex flex-col items-center">
+                  <Image
+                    src={m.src}
+                    alt={`${unit.name} ${m.label}`}
+                    width={420}
+                    height={312}
+                    className="w-full h-auto rounded-2xl shadow-md"
+                    style={{ background: "#f6f3ee" }}
+                    priority={idx === 0}
+                  />
+                  {/* ✅ 라벨 출력 */}
+                  <div className="mt-2 text-sm md:text-base text-[#58594e] font-light text-center">
+                    {m.label}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

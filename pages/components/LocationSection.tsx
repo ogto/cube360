@@ -10,7 +10,7 @@ const communityList = [
     desc: "수익을 보장하는\n충북 최대 규모의\n27세대 풀빌라 세컨하우스",
   },
   {
-    img: "/images/location/1.jpg",
+    img: "/images/location/2.png",
     title: "관광",
     subtitle: "[지역관광발전지수 1등급]",
     desc: "인접 남한강 수상 레져\n 시설의 개발로 수변 관광 인구",
