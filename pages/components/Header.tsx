@@ -34,7 +34,7 @@ export default function Header() {
         {/* 로고 */}
         <div className="flex items-center gap-2">
           <Image src="/images/cube-logo.png" alt="CUBE360 로고" width={38} height={38} />
-          <span className="text-white text-lg md:text-xl font-extrabold tracking-tight">단양스테이 360</span>
+          <span className="text-white text-lg md:text-xl font-extrabold tracking-tight">단양동화마을</span>
         </div>
         {/* PC: 네비게이션 */}
         <div className="hidden md:flex flex-1 justify-center">
@@ -50,22 +50,22 @@ export default function Header() {
             ))}
           </div>
         </div>
-{/* PC: 연락처 (카카오톡 아이콘으로 교체) */}
-<div className="hidden md:flex items-center">
-  <a
-    href="https://pf.kakao.com/_YOUR_ID" // 카카오톡 채널 URL로 교체
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center justify-center rounded-lg hover:bg-white/10 transition"
-  >
-    <Image
-      src="/images/kakao_talk.png"
-      alt="카카오톡 상담"
-      width={96}
-      height={96}
-    />
-  </a>
-</div>
+        {/* PC: 연락처 (카카오톡 아이콘으로 교체) */}
+        {/* <div className="hidden md:flex items-center">
+          <a
+            href="https://pf.kakao.com/_YOUR_ID"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center rounded-lg hover:bg-white/10 transition"
+          >
+            <Image
+              src="/images/kakao_talk.png"
+              alt="카카오톡 상담"
+              width={96}
+              height={96}
+            />
+          </a>
+        </div> */}
 
         {/* 모바일: 메뉴버튼 */}
         <button
