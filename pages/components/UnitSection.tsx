@@ -69,8 +69,8 @@ function TypeTab({
       type="button"
       className={
         active
-          ? "px-4 py-2 rounded-full text-white bg-[#292821] border border-[#292821] shadow-sm"
-          : "px-4 py-2 rounded-full text-[#7d6847] bg-white border border-[#e7e0c9] hover:bg-[#f4efe2] transition"
+          ? "px-5 py-3 rounded-full text-white bg-[#292821] border border-[#292821] shadow-sm text-xl md:text-2xl tracking-wide"
+          : "px-5 py-3 rounded-full text-[#7d6847] bg-white border border-[#e7e0c9] hover:bg-[#f4efe2] transition text-xl md:text-2xl tracking-wide"
       }
       aria-pressed={active}
     >
@@ -188,7 +188,7 @@ export default function UnitSection() {
   }, [typeKey]);
 
   return (
-    <section id="unit" className="w-full bg-[#fefcf7] pb-20 pt-12">
+    <section id="unit" className="w-full bg-[#fefcf7] py-40">
       <div className="max-w-7xl mx-auto px-4">
         {/* 타이틀 + 탭 */}
         <div className="text-center mb-6">
@@ -200,7 +200,7 @@ export default function UnitSection() {
           </div>
           <div className="text-xl md:text-2xl text-[#58594e] mt-1 mb-5 font-light">객실타입</div>
 
-          <div className="flex items-center justify-center gap-2 md:gap-3">
+          <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap">
             <TypeTab active={typeKey === "A"} label="A TYPE" onClick={() => setTypeKey("A")} />
             <TypeTab active={typeKey === "B"} label="B TYPE" onClick={() => setTypeKey("B")} />
             <TypeTab active={typeKey === "C"} label="C TYPE" onClick={() => setTypeKey("C")} />

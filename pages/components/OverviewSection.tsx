@@ -117,7 +117,7 @@ export default function OverviewSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1.2, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-x-8 gap-y-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
         >
           {[
             { from: "동서울 IC", via: "중부고속도로", time: "1.5 Hour" },
@@ -127,7 +127,7 @@ export default function OverviewSection() {
             <div
               key={from}
               className="
-                min-w-[260px] max-w-[320px]
+                h-full
                 px-8 py-6 md:px-10 md:py-8
                 rounded-3xl text-center
                 bg-black/45 backdrop-blur-sm
@@ -135,7 +135,7 @@ export default function OverviewSection() {
                 shadow-xl shadow-black/30
               "
             >
-              <div className="text-white font-semibold text-2xl md:text-3xl leading-snug">
+              <div className="text-white font-semibold text-2xl md:text-2xl leading-snug">
                 <span className="font-bold">{from}</span>
                 <span className="mx-2">➝</span>
                 <span>{via}</span>
@@ -144,6 +144,7 @@ export default function OverviewSection() {
             </div>
           ))}
         </motion.div>
+
 
         {/* 3. 중심 원 + 방사형 라벨 */}
         {/* <motion.div

@@ -36,7 +36,7 @@ export default function LocationSection() {
       className="w-full min-h-screen flex flex-col justify-center items-center bg-[#fffaf5] px-0"
       style={{ minHeight: "100vh" }}
     >
-      <div className="w-full max-w-[1440px] px-2 md:px-8 lg:px-20 xl:px-0 mx-auto flex flex-col flex-1 justify-center pt-10 sm:pt-16 pb-16 sm:pb-24 lg:pb-36">
+      <div className="w-full max-w-[1840px] px-2 md:px-8 lg:px-20 xl:px-0 mx-auto flex flex-col flex-1 justify-center pt-10 sm:pt-16 pb-16 sm:pb-24 lg:pb-36">
         {/* <h1
           className="text-3xl sm:text-4xl md:text-5xl font-normal mb-6 text-center tracking-tight"
           style={{ fontFamily: "Nanum Myeongjo, serif", color: "#ff8800ff" }}
@@ -54,7 +54,7 @@ export default function LocationSection() {
           className="
             grid w-full
             grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4
-            gap-y-24 gap-x-14
+            gap-y-[144px] gap-x-[84px]
             px-2 sm:px-4 md:px-0
             place-items-center
           "

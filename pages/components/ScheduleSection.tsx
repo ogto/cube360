@@ -14,11 +14,11 @@ export default function ScheduleSection() {
 
   return (
     // 섹션 전체(풀폭) 배경을 아이보리로
-    <section id="hero" className="w-full bg-[#faf8f2]">
+    <section id="hero" className="w-full bg-[#faf8f2] py-20 md:py-20">
       {/* 가로 최대 1440, 중앙정렬, 한 화면에 두 장 */}
       <div
         className="
-          max-w-[1440px] mx-auto px-4
+          max-w-[1040px] mx-auto px-4
           h-[calc(100svh-1rem)]  /* 모바일 브라우저 대응: svh 권장 */
           flex flex-col gap-4
         "
@@ -26,14 +26,13 @@ export default function ScheduleSection() {
         {scheduleImages.map((img, idx) => (
           <div
             key={img.src}
-            // 카드 배경은 투명(또는 같은 색)으로
             className="relative w-full flex-1 rounded-xl overflow-hidden bg-transparent"
           >
             <Image
               src={img.src}
               alt={img.alt}
               fill
-              sizes="(max-width: 1440px) 100vw, 1440px"
+              sizes="(max-width: 1040px) 100vw, 1040px"
               className="object-contain"
               priority={idx === 0}
             />
@@ -41,5 +40,6 @@ export default function ScheduleSection() {
         ))}
       </div>
     </section>
+
   );
 }
