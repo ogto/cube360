@@ -14,7 +14,7 @@ export default function ScheduleSection() {
 
   return (
     // 섹션 전체(풀폭) 배경을 아이보리로
-    <section id="hero" className="w-full bg-[#faf8f2] py-20 md:py-20">
+    <section id="schedule" className="w-full bg-[white] py-20 md:py-20">
       {/* 가로 최대 1440, 중앙정렬, 한 화면에 두 장 */}
       <div
         className="
@@ -23,6 +23,12 @@ export default function ScheduleSection() {
           flex flex-col gap-4
         "
       >
+        <h2
+          className="text-2xl sm:text-3xl md:text-4xl font-normal text-center tracking-tight"
+          style={{ fontFamily: "Nanum Myeongjo, serif", color: "#274777" }}
+        >
+          분양 일정 계획
+        </h2>
         {scheduleImages.map((img, idx) => (
           <div
             key={img.src}

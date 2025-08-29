@@ -16,19 +16,16 @@ export default function ScheduleSection2() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
-  // 모달/인덱스
   const [showModal, setShowModal] = useState(false);
   const [modalIndex, setModalIndex] = useState<number | null>(null);
 
-  // 줌/이동 상태
-  const [zoom, setZoom] = useState(1); // 1 ~ 3
+  const [zoom, setZoom] = useState(1);
   const [pos, setPos] = useState<Point>({ x: 0, y: 0 });
   const [panning, setPanning] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const lastPointerRef = useRef<Point | null>(null);
 
-  // 멀티터치(핀치)
   const pointers = useRef<Map<number, Point>>(new Map());
   const lastPinchDist = useRef<number | null>(null);
 
@@ -65,7 +62,6 @@ export default function ScheduleSection2() {
     setPos({ x: 0, y: 0 });
   };
 
-  // 컨테이너 중심/크기
   const getCenter = () => {
     const el = containerRef.current;
     if (!el) return { x: 0, y: 0, w: 0, h: 0 };
@@ -73,7 +69,6 @@ export default function ScheduleSection2() {
     return { x: rect.width / 2, y: rect.height / 2, w: rect.width, h: rect.height };
   };
 
-  // 허용 이동 범위
   const clampPos = (z: number, p: Point) => {
     const { w, h } = getCenter();
     const maxX = (w * (z - 1)) / 2;
@@ -84,7 +79,6 @@ export default function ScheduleSection2() {
     };
   };
 
-  // 특정 anchor 기준 줌
   const zoomAt = (newZ: number, anchor: Point) => {
     const el = containerRef.current;
     if (!el) {
@@ -104,18 +98,16 @@ export default function ScheduleSection2() {
     setPos(clampPos(newZ, newPos));
   };
 
-  // 마우스 휠 줌
   const onWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const anchor = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    const dir = e.deltaY > 0 ? -1 : 1; // 위로 스크롤 시 확대
+    const dir = e.deltaY > 0 ? -1 : 1;
     const target = Math.min(Z_MAX, Math.max(Z_MIN, +(zoom + dir * Z_STEP).toFixed(3)));
     zoomAt(target, anchor);
   };
 
-  // 더블클릭 줌 토글
   const onDoubleClick = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -124,7 +116,6 @@ export default function ScheduleSection2() {
     zoomAt(target, anchor);
   };
 
-  // 포인터(드래그/핀치)
   const onPointerDown = (e: React.PointerEvent) => {
     const el = containerRef.current;
     if (!el) return;
@@ -147,7 +138,6 @@ export default function ScheduleSection2() {
 
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
-    // 핀치
     if (pointers.current.size === 2) {
       const [p1, p2] = Array.from(pointers.current.values());
       const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
@@ -163,7 +153,6 @@ export default function ScheduleSection2() {
       return;
     }
 
-    // 드래그
     if (panning && zoom > 1 && lastPointerRef.current) {
       const dx = e.clientX - lastPointerRef.current.x;
       const dy = e.clientY - lastPointerRef.current.y;
@@ -185,13 +174,10 @@ export default function ScheduleSection2() {
     }
   };
 
-  // 키보드
   useEffect(() => {
     if (!showModal) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeModal();
-
-      // 줌 == 1: 좌/우로 이미지 넘김, 줌 > 1: 이동
       if (zoom === 1) {
         if (e.key === "ArrowLeft") prevModal();
         if (e.key === "ArrowRight") nextModal();
@@ -206,7 +192,6 @@ export default function ScheduleSection2() {
         if (e.key === "ArrowRight" || e.key.toLowerCase() === "d")
           setPos((p) => clampPos(zoom, { x: p.x - step, y: p.y }));
       }
-
       if (e.key.toLowerCase() === "z") {
         const { x, y } = getCenter();
         zoomAt(zoom === 1 ? 2 : 1, { x, y });
@@ -214,23 +199,27 @@ export default function ScheduleSection2() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showModal, zoom, pos]);
 
   return (
-    <section id="hero" className="w-full bg-[#faf8f2] py-12">
+    <section id="hero" className="w-full bg-[#faf8f2] py-100">
+      <h2
+        className="m-0 mb-36 text-2xl sm:text-3xl md:text-4xl font-normal text-center tracking-tight"
+        style={{ fontFamily: "Nanum Myeongjo, serif", color: "#274777" }}
+      >
+        풀빌라 배치 & 분양가
+      </h2>
       <div
         className="
           w-full mx-auto px-4
-          min-h-screen
-          flex flex-col items-center justify-center gap-8
+          flex flex-row items-center justify-center gap-8
         "
       >
-        {scheduleImages.map((img, idx) => (
+        {[scheduleImages[1], scheduleImages[0]].map((img, idx) => (
           <button
             key={img.src}
             type="button"
-            onClick={() => openModal(idx)}
+            onClick={() => openModal(idx === 0 ? 1 : 0)}
             className="
               relative w-full max-w-[960px]
               aspect-[4/3] sm:aspect-[16/9]
@@ -246,14 +235,14 @@ export default function ScheduleSection2() {
               fill
               className="object-contain"
               sizes="(max-width: 1024px) 100vw, 960px"
-              priority={idx === 0}
+              priority={idx === 1}
               draggable={false}
             />
           </button>
         ))}
       </div>
 
-      {/* 모달 */}
+      {/* --- 모달 부분은 그대로 유지 --- */}
       {showModal && modalIndex !== null && (
         <div
           className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-[1px] flex items-center justify-center"
@@ -265,7 +254,7 @@ export default function ScheduleSection2() {
             className="relative w-[96vw] max-w-6xl h-[88vh] flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* 닫기 */}
+            {/* 닫기 버튼 */}
             <button
               type="button"
               onClick={closeModal}
@@ -275,15 +264,14 @@ export default function ScheduleSection2() {
               ×
             </button>
 
-            {/* 이전/다음 */}
             {scheduleImages.length > 1 && (
               <>
                 <button
-                    type="button"
-                    onClick={prevModal}
-                    className="fixed left-3 md:left-5 top-1/2 -translate-y-1/2 z-[10010] text-white/90 hover:text-white text-5xl md:text-6xl leading-none"
-                    aria-label="이전 이미지"
-                  >
+                  type="button"
+                  onClick={prevModal}
+                  className="fixed left-3 md:left-5 top-1/2 -translate-y-1/2 z-[10010] text-white/90 hover:text-white text-5xl md:text-6xl leading-none"
+                  aria-label="이전 이미지"
+                >
                   ‹
                 </button>
                 <button
@@ -297,10 +285,9 @@ export default function ScheduleSection2() {
               </>
             )}
 
-            {/* 하단 스크림(대비 확보) */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 z-[10000] bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-            {/* 고정 컨트롤 바 */}
+            {/* 줌 컨트롤 */}
             <div
               className="fixed left-1/2 z-[10010] -translate-x-1/2"
               style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 20px)" }}
@@ -345,7 +332,7 @@ export default function ScheduleSection2() {
               </div>
             </div>
 
-            {/* 줌/이동 캔버스 */}
+            {/* 이미지 캔버스 */}
             <div
               ref={containerRef}
               className={`

@@ -6,14 +6,14 @@ const communityList = [
   {
     img: "/images/location/1.jpg",
     title: "규모",
-    subtitle: "[충북 최대]",
-    desc: "수익을 보장하는\n충북 최대 규모의\n27세대 풀빌라 세컨하우스",
+    subtitle: "[충북 최대 체류 시설]",
+    desc: "정주인과 관광객 모두가\n주목하는 충북 최대 규모의\n27세대 풀빌라 세컨하우스",
   },
   {
     img: "/images/location/2.png",
     title: "관광",
     subtitle: "[지역관광발전지수 1등급]",
-    desc: "인접 남한강 수상 레져\n 시설의 개발로 수변 관광 인구",
+    desc: "남한강변 수상 레져 시설의\n개발로 천혜의 자연 속\n수변 관광 인구 대거 유입 예상",
   },
   {
     img: "/images/location/3.png",
@@ -24,7 +24,7 @@ const communityList = [
   {
     img: "/images/location/4.png",
     title: "정책적 혜택",
-    subtitle: "[지가 상승 150% 이상]",
+    subtitle: "[지가상승으로 가치UP]",
     desc: "용도지역 변경과\n인구감소지역 지정\n> 2주택자 해당X",
   },
 ];

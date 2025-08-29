@@ -29,7 +29,13 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-40 bg-black/30 backdrop-blur-sm w-full">
       <nav className="max-w-6xl mx-auto px-2 sm:px-4 py-2.5 sm:py-3 flex items-center gap-2">
         {/* 로고 */}
-        <div className="flex items-center gap-2 min-w-0 shrink-0">
+        <div
+          className="flex items-center gap-2 min-w-0 shrink-0 cursor-pointer"
+          onClick={() => {
+            setMenuOpen(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
           <Image
             src="/images/cube-logo.png"
             alt="CUBE360 로고"
@@ -41,7 +47,6 @@ export default function Header() {
             단양동화마을
           </span>
         </div>
-
         {/* PC 네비게이션 (가로 스크롤 허용) */}
         <div className="hidden md:flex flex-1 min-w-0 justify-center">
           <div className="no-scrollbar overflow-x-auto overflow-y-hidden whitespace-nowrap flex items-center gap-3 lg:gap-4 px-1">
