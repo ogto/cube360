@@ -69,7 +69,7 @@ export default function LocationSection() {
               delay={0.14 * i}
               sizeMobile={210}
               sizeDesktop={340}
-              objectFit={i === 3 ? "contain" : "cover"} // ✅ 4번째(인덱스 3)만 contain
+              objectFit={i === 3 ? "contain" : "cover"}
             />
           ))}
         </div>

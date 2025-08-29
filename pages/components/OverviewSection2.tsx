@@ -9,7 +9,7 @@ export default function OverviewSection2() {
   return (
     <section
       id="overview"
-      className="w-full relative bg-[#1a1a1a] flex justify-center px-4"
+      className="w-screen h-screen relative bg-[#1a1a1a] flex flex-col items-center justify-center px-4"
     >
       {/* 가운데 정렬 + 최대폭 1280px */}
       <div className="w-full max-w-[1280px] mx-auto">
