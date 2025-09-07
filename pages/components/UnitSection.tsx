@@ -22,7 +22,7 @@ type Unit = {
 const unitA: Unit = {
   key: "A",
   name: "A TYPE",
-  rooms: 10,
+  rooms: 18,
   py: 22,
   floors: 1,
   main: [{ src: "/images/type/m1.jpg", label: "단층" }],
@@ -43,7 +43,7 @@ const unitB: Unit = {
 const unitC: Unit = {
   key: "C",
   name: "C TYPE",
-  rooms: 6,
+  rooms: 4,
   py: 50,
   floors: 2,
   main: [

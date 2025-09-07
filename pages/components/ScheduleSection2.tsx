@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const scheduleImages = [
-  { src: "/images/schedule/3.png", alt: "Schedule 3" },
   { src: "/images/schedule/4.png", alt: "Schedule 4" },
+  { src: "/images/schedule/5.png", alt: "Schedule 5" },
 ];
 
 type Point = { x: number; y: number };

@@ -3,6 +3,7 @@ import Image from "next/image";
 
 const scheduleImages = [
   { src: "/images/schedule/2.png", alt: "Schedule 2" },
+  { src: "/images/schedule/3.png", alt: "Schedule 3" },
 ];
 
 export default function ScheduleSection() {
@@ -35,7 +36,7 @@ export default function ScheduleSection() {
             key={img.src}
             className="
               relative w-full
-              h-[600px] sm:h-[720px] md:h-[900px]
+              h-[300px] sm:h-[300px] md:h-[600px]
               rounded-xl overflow-hidden bg-transparent
             "
           >

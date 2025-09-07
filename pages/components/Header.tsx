@@ -43,7 +43,7 @@ export default function Header() {
             height={48}
             className="md:w-[56px] md:h-[56px] lg:w-[64px] lg:h-[64px]"
           />
-          <span className="text-white text-2xl md:text-3xl font-extrabold tracking-wider whitespace-nowrap truncate max-w-[28vw] md:max-w-[22vw] lg:max-w-none leading-none">
+          <span className="text-white text-2xl md:text-3xl font-extrabold tracking-wider whitespace-nowrap truncate max-w-[38vw] md:max-w-[30vw] lg:max-w-none leading-none">
             단양동화마을
           </span>
         </div>

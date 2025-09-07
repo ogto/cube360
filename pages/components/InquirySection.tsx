@@ -7,7 +7,7 @@ export default function InquirySection() {
           <div className="max-w-2xl w-full px-6">
             <div className="bg-white p-12 rounded-3xl shadow-2xl border">
               <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-[#1d283a]">
-                분양 문의
+                상담 문의
               </h2>
               <form className="space-y-7">
                 <input
@@ -30,9 +30,9 @@ export default function InquirySection() {
                   <option value="" disabled>
                     관심 타입 선택
                   </option>
-                  <option value="84">84㎡</option>
-                  <option value="101">101㎡</option>
-                  <option value="미정">미정</option>
+                  <option value="84">22평형</option>
+                  <option value="101">29평형</option>
+                  <option value="미정">50평형</option>
                 </select>
                 <textarea
                   placeholder="문의 내용"
@@ -46,7 +46,7 @@ export default function InquirySection() {
                   문의하기
                 </button>
               </form>
-              <div className="mt-7 flex justify-center gap-4">
+              {/* <div className="mt-7 flex justify-center gap-4">
                 <a
                   href="#"
                   rel="noopener noreferrer"
@@ -57,7 +57,7 @@ export default function InquirySection() {
                   </svg>
                   카카오톡 문의
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
