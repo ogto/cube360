@@ -33,7 +33,7 @@ export default function HeroSection2() {
         </h2>
         <h1 className="text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 leading-snug drop-shadow-lg font-bold">
           프라이빗한 <br className="block" />
-          고급 세컨드<br /> 하우스
+          고급 세컨<br /> 하우스
         </h1>
       </div>
     </section>
