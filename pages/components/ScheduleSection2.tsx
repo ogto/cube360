@@ -202,7 +202,7 @@ export default function ScheduleSection2() {
   }, [showModal, zoom, pos]);
 
   return (
-    <section id="hero" className="w-full bg-[#faf8f2] py-100">
+    <section id="hero" className="w-full bg-[#faf8f2] py-16">
       <h2
         className="m-0 mb-36 text-2xl sm:text-3xl md:text-4xl font-normal text-center tracking-tight"
         style={{ fontFamily: "Nanum Myeongjo, serif", color: "#274777" }}
@@ -212,7 +212,7 @@ export default function ScheduleSection2() {
       <div
         className="
           w-full mx-auto px-4
-          flex flex-row items-center justify-center gap-8
+          flex flex-col items-center justify-center gap-8
         "
       >
         {[scheduleImages[1], scheduleImages[0]].map((img, idx) => (
