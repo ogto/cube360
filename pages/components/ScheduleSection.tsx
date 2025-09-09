@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import Image from "next/image";
 
 const scheduleImages = [
-  { src: "/images/schedule/2.png", alt: "Schedule 2" },
   { src: "/images/schedule/3.png", alt: "Schedule 3" },
 ];
 
